@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_marginBottom="30dp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/layoutStt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:visibility="invisible"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_equalizer"
+                android:id="@+id/img_stt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/text_stt"
+                android:layout_alignStart="@+id/img_stt"
+                android:layout_alignTop="@+id/img_stt"
+                android:layout_alignEnd="@+id/img_stt"
+                android:layout_alignBottom="@+id/img_stt"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:textSize="@dimen/dimen_14sp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_toStartOf="@id/three_dots"
+            android:id="@+id/layoutname"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/layoutStt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="normal"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textSize="@dimen/dimen_18sp"
+                android:id="@+id/tenbaihat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginTop="2dp"
+                android:textStyle="normal"
+                android:textSize="14sp"
+                android:id="@+id/duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <ImageView
+            android:padding="@dimen/dimen_5dp"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/three_dots"
+            android:src="@drawable/ic_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</RelativeLayout>

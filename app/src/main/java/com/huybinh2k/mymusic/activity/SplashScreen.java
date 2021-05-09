@@ -1,4 +1,4 @@
-package com.huybinh2k.mymusic;
+package com.huybinh2k.mymusic.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+
+import com.huybinh2k.mymusic.R;
 
 /**
  * Create by BinhBH 5/8/2021
