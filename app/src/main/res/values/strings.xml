@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">MyMusic</string>
     <string name="search">Search</string>
+    <string name="delete_song">Delete Song</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="question_delete">\"Do you want to delete \"</string>
+    <string name="cannot_del">Cannot delete song playing</string>
 </resources>
