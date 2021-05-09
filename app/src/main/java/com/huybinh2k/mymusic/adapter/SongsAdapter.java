@@ -25,6 +25,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
     private Context mContext;
     private List<Song> mList;
     private int mPlayingId = -1;
+    private static OnItemClickListener mListener;
 
     public SongsAdapter(@NonNull Context context, @NonNull List<Song> objects) {
         this.mContext = context;
@@ -83,7 +84,22 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
             time = itemView.findViewById(R.id.duration);
             imageId = itemView.findViewById(R.id.img_stt);
             imageMore = itemView.findViewById(R.id.three_dots);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        mListener.onItemClick(itemView, getLayoutPosition());
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
 }

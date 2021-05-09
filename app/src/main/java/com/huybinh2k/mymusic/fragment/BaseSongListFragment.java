@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.huybinh2k.mymusic.R;
 import com.huybinh2k.mymusic.Song;
+import com.huybinh2k.mymusic.activity.ActivityMusic;
 import com.huybinh2k.mymusic.adapter.SongsAdapter;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class BaseSongListFragment extends Fragment {
         mAdapter = new SongsAdapter(mContext, mListSongs);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        OnItemClickSongListener();
     }
 
     /**
@@ -68,7 +70,7 @@ public class BaseSongListFragment extends Fragment {
                         musicCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
                 int idProvider = musicCursor.getInt(
                         musicCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-                Uri sArtworkUri = Uri.parse(MediaStore.Audio.AlbumColumns.ALBUM_ART);
+                Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
                 long albumId = musicCursor.getLong(
                         musicCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
                 Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
@@ -93,4 +95,22 @@ public class BaseSongListFragment extends Fragment {
         super.onDetach();
         mContext = null;
     }
+
+    /**
+     * Set su kien click 1 item cho adapter
+     */
+    protected void OnItemClickSongListener(){
+        mAdapter.setOnItemClickListener(new SongsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                Song song = mListSongs.get(position);
+                mAdapter.setPlayingId(song.getId());
+                mAdapter.notifyDataSetChanged();
+                if (getActivity() instanceof ActivityMusic){
+                    ((ActivityMusic)getActivity()).updateUIPlayBar(song);
+                }
+            }
+        });
+    }
+
 }
