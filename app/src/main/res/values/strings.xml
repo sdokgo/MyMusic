@@ -7,4 +7,9 @@
     <string name="question_delete">\"Do you want to delete \"</string>
     <string name="cannot_del">Cannot delete song playing</string>
     <string name="enter_the_song_want_to_find">enter song name</string>
+    <string name="sort">Sort by…</string>
+    <string name="duration">Duration</string>
+    <string name="duration_desc">Duration (DESC)</string>
+    <string name="name">Name</string>
+    <string name="name_desc">Name (DESC)</string>
 </resources>

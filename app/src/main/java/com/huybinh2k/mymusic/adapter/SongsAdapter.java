@@ -24,17 +24,25 @@ import com.huybinh2k.mymusic.Song;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 /**
  * Create by BinhBH 5/9/2021
  */
-public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
+public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> implements Comparator<Song> {
+    public static final int SORT_BY_NAME_DES = -2;
+    public static final int SORT_BY_NAME = 2;
+    public static final int SORT_BY_DURATION = 1;
+    public static final int SORT_BY_DURATION_DES = -1;
+    public static final String SORT_BY = "sort_by";
+
     private Context mContext;
     private List<Song> mList;
     private int mPlayingId = -1;
     private static OnItemClickListener mListener;
+    private int mSortBy = SORT_BY_NAME;
 
     public SongsAdapter(@NonNull Context context, @NonNull List<Song> objects) {
         this.mContext = context;
@@ -102,6 +110,20 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    @Override
+    public int compare(Song o1, Song o2) {
+        if (mSortBy == SORT_BY_NAME){
+            return o1.getSongName().compareTo(o2.getSongName());
+        }else if (mSortBy == SORT_BY_NAME_DES){
+            return o2.getSongName().compareTo(o1.getSongName());
+        }else if (mSortBy == SORT_BY_DURATION){
+            return (int) (o1.getDuration() - o2.getDuration());
+        }else if (mSortBy == SORT_BY_DURATION_DES){
+            return (int) (o2.getDuration() - o1.getDuration());
+        }
+        return 0;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -177,6 +199,12 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
             }
         });
         builder.show();
+    }
+
+    public void sort(int sort){
+        mSortBy = sort;
+        mList.sort(this);
+        notifyDataSetChanged();
     }
 
 }

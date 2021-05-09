@@ -6,4 +6,16 @@
         android:id="@+id/search"
         app:showAsAction="ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
+   <item android:icon="@drawable/ic_sort"
+       android:title="@string/sort">
+       <menu>
+           <item android:title="@string/duration"
+               android:id="@+id/sort_by_duration">
+           </item>
+           <item android:title="@string/name"
+               android:id="@+id/sort_by_name">
+           </item>
+       </menu>
+   </item>
+
 </menu>

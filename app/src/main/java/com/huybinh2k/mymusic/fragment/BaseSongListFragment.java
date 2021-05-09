@@ -8,8 +8,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.huybinh2k.mymusic.R;
 import com.huybinh2k.mymusic.Song;
+import com.huybinh2k.mymusic.Utils;
 import com.huybinh2k.mymusic.activity.ActivityMusic;
 import com.huybinh2k.mymusic.adapter.SongsAdapter;
 
@@ -49,6 +54,7 @@ public class BaseSongListFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         OnItemClickSongListener();
+        mAdapter.sort(Utils.getInt(mContext, SongsAdapter.SORT_BY));
     }
 
     /**
@@ -119,5 +125,9 @@ public class BaseSongListFragment extends Fragment {
         mListSongs = arrayList;
         mAdapter.setList(arrayList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void sortBy(int sort){
+        mAdapter.sort(sort);
     }
 }

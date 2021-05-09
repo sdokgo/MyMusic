@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverFlow</item>
     </style>
 
     <style name="Medium">
@@ -20,4 +21,9 @@
         <item name="android:editTextColor">@android:color/white</item>
         <item name="android:textColorHint">@android:color/white</item>
     </style>
+
+    <style name="OverFlow">
+        <item name="android:src">@drawable/ic_over_flow_icon</item>
+    </style>
+
 </resources>
