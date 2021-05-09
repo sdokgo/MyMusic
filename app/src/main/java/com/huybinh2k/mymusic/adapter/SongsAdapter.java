@@ -45,6 +45,11 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
         this.mPlayingId = mPlayingIdProvider;
     }
 
+
+    public void setList(List<Song> mList) {
+        this.mList = mList;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -1,5 +1,10 @@
 package com.huybinh2k.mymusic;
 
+import android.content.ContentUris;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
 import java.io.Serializable;
 
 /**
@@ -21,6 +26,23 @@ public class Song implements Serializable {
         this.artist = artist;
         this.imgPath = img;
         this.duration = duration;
+    }
+
+    public Song(Cursor cursor){
+        songName = cursor.getString(
+                cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+        artist = cursor.getString(
+                cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+        songPath = cursor.getString(
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+        id  = cursor.getInt(
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        long albumId = cursor.getLong(
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+        imgPath = String.valueOf(albumArtUri);
+        duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
     }
 
 

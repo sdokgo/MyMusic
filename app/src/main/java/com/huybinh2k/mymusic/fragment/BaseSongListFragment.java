@@ -62,21 +62,7 @@ public class BaseSongListFragment extends Fragment {
         if (musicCursor != null) {
             musicCursor.moveToFirst();
             while (!musicCursor.isAfterLast()) {
-                String songName = musicCursor.getString(
-                        musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                String songArtist = musicCursor.getString(
-                        musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                String songPath = musicCursor.getString(
-                        musicCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
-                int idProvider = musicCursor.getInt(
-                        musicCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-                Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-                long albumId = musicCursor.getLong(
-                        musicCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
-                Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-                String albumArt = String.valueOf(albumArtUri);
-                long milliseconds = musicCursor.getLong(musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-                arrayList.add(new Song(idProvider, songName, songPath, songArtist, albumArt, milliseconds));
+                arrayList.add(new Song(musicCursor));
                 musicCursor.moveToNext();
             }
             musicCursor.close();
@@ -113,4 +99,25 @@ public class BaseSongListFragment extends Fragment {
         });
     }
 
+    /**
+     * Đọc Tìm kiếm bài hát
+     */
+    public void searchSong(String s) {
+        ArrayList<Song> arrayList = new ArrayList<>();
+        ContentResolver musicResolver = mContext.getContentResolver();
+        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String where = MediaStore.Audio.Media.TITLE + " LIKE " + "'%"+ s + "%'";
+        Cursor musicCursor = musicResolver.query(musicUri, null, where, null, null);
+        if (musicCursor != null) {
+            musicCursor.moveToFirst();
+            while (!musicCursor.isAfterLast()) {
+                arrayList.add(new Song(musicCursor));
+                musicCursor.moveToNext();
+            }
+            musicCursor.close();
+        }
+        mListSongs = arrayList;
+        mAdapter.setList(arrayList);
+        mAdapter.notifyDataSetChanged();
+    }
 }
