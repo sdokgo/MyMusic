@@ -1,7 +1,7 @@
 package com.huybinh2k.mymusic.fragment;
 
 
-import android.content.Context;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.huybinh2k.mymusic.R;
-import com.huybinh2k.mymusic.database.FavoriteSongDAO;
 
+
+/**
+ * Create by BinhBH 5/10/2021
+ */
 public class FavoriteSongsFragment extends BaseSongListFragment {
 
     @Override

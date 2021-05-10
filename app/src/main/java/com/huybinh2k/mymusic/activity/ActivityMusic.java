@@ -204,6 +204,9 @@ public class ActivityMusic extends AppCompatActivity {
         toggle.syncState();
     }
 
+    /**
+     * Chuyển qua lại giữa 2 fragment
+     */
     private void selectItemNavigation(MenuItem menuItem) {
         mSearchView.setQuery("", true);
         switch (menuItem.getItemId()) {

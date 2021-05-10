@@ -9,6 +9,9 @@ import com.huybinh2k.mymusic.Song;
 
 import java.util.ArrayList;
 
+/**
+ * Create by BinhBH 5/10/2021
+ */
 public class FavoriteSongDAO {
     private final SQLiteDatabase mDatabase;
 
@@ -17,6 +20,9 @@ public class FavoriteSongDAO {
         this.mDatabase = helper.getWritableDatabase();
     }
 
+    /** thêm bài hát yêu thích
+     * @return true nếu thêm thành công, false nếu thất bại
+     */
     public boolean insertFavorite(Song song) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.ID, song.getId());
@@ -29,6 +35,9 @@ public class FavoriteSongDAO {
         return mDatabase.insert(DatabaseHelper.FAVORITE_SONGS_TABLE, null, values) > 0;
     }
 
+    /** sửa bài hát yêu thích
+     * @return true nếu sửa thành công, false nếu thất bại
+     */
     public boolean updateFavorite(Song song) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.FAVORITE, song.isFavorite() ? 1 : 0);
@@ -37,12 +46,18 @@ public class FavoriteSongDAO {
         return mDatabase.update(DatabaseHelper.FAVORITE_SONGS_TABLE, values, whereClause, whereArgs) > 0;
     }
 
+    /** xóa bài hát yêu thích
+     * @return true nếu xóa thành công, false nếu thất bại
+     */
     public boolean delete(int idProvider) {
         String whereClause = DatabaseHelper.ID + "=?";
         String whereArgs[] = {String.valueOf(idProvider)};
         return mDatabase.delete(DatabaseHelper.FAVORITE_SONGS_TABLE, whereClause, whereArgs) > 0;
     }
 
+    /**
+     * @return dánh sách bài hát yêu thích
+     */
     public ArrayList<Song> listFavorite() {
         ArrayList<Song> list = new ArrayList<>();
         String where = DatabaseHelper.FAVORITE + "=?";
@@ -59,6 +74,9 @@ public class FavoriteSongDAO {
         return list;
     }
 
+    /**
+     * Tìm kiếm bài hát trong favorites
+     */
     public ArrayList<Song> searchFavorite(String s) {
         ArrayList<Song> list = new ArrayList<>();
         String where = DatabaseHelper.SONG_NAME + " LIKE ?";
