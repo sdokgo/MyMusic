@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.huybinh2k.mymusic.R;
 import com.huybinh2k.mymusic.Song;
+import com.huybinh2k.mymusic.database.FavoriteSongDAO;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -44,9 +45,17 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
     private static OnItemClickListener mListener;
     private int mSortBy = SORT_BY_NAME;
 
+    private boolean mIsFavorite;
+    private FavoriteSongDAO mFavoriteSongDAO;
+
     public SongsAdapter(@NonNull Context context, @NonNull List<Song> objects) {
         this.mContext = context;
         this.mList = objects;
+        mFavoriteSongDAO = new FavoriteSongDAO(mContext);
+    }
+
+    public void setIsFavorite(boolean mIsFavorite) {
+        this.mIsFavorite = mIsFavorite;
     }
 
     public void setPlayingId(int mPlayingIdProvider) {
@@ -93,12 +102,23 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
 
     private void createPopupMenu(View v, final Song song) {
         PopupMenu popupMenu = new PopupMenu(mContext, v);
-            popupMenu.getMenuInflater().inflate(R.menu.item_menu, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(
+                    mIsFavorite?R.menu.item_menu_favorites:R.menu.item_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.deleteSong) {
-                        deleteSong(song);
+                    switch (item.getItemId()){
+                        case R.id.deleteSong:
+                            deleteSong(song);
+                            break;
+                        case R.id.addToFavorite:
+                            mFavoriteSongDAO.insertFavorite(song);
+                            break;
+                        case R.id.removeFromFavorite:
+                            mFavoriteSongDAO.delete(song.getId());
+                            mList.remove(song);
+                            notifyDataSetChanged();
+                            break;
                     }
                     return true;
                 }
@@ -163,6 +183,49 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
      * Xóa 1 bài hát
      */
     private void deleteSong(final Song song){
+        if (song.getId() == mPlayingId){
+            Toast.makeText(mContext, R.string.cannot_del, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(R.string.delete_song);
+        builder.setMessage(mContext.getString(R.string.question_delete) + song.getSongName() +" ?");
+        builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ContentResolver resolver = mContext.getContentResolver();
+                try {
+                    Uri uri =  MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    String where = MediaStore.Audio.Media._ID + " = " + song.getId();
+                    resolver.delete(uri, where, null);
+                    File fileDelete = new File(song.getSongPath());
+                    if (fileDelete.exists()) {
+                        if (fileDelete.delete()) {
+                            Toast.makeText(mContext, "Delete Success", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    mList.remove(song);
+                    notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(mContext, "Delete Failure", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
+    }
+
+    /**
+     * @param song to delete
+     * Xóa 1 bài hát
+     */
+    private void removeFavorite(final Song song){
         if (song.getId() == mPlayingId){
             Toast.makeText(mContext, R.string.cannot_del, Toast.LENGTH_SHORT).show();
             return;

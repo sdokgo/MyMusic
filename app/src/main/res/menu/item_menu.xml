@@ -2,4 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="@string/delete_song"
         android:id="@+id/deleteSong"/>
+    <item android:title="@string/add_to_favorite"
+        android:id="@+id/addToFavorite"/>
 </menu>

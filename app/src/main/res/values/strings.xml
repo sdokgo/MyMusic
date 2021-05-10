@@ -12,4 +12,13 @@
     <string name="duration_desc">Duration (DESC)</string>
     <string name="name">Name</string>
     <string name="name_desc">Name (DESC)</string>
+    <string name="favorite_song">Favorite Song</string>
+    <string name="all_song">All Song</string>
+    <string name="music">My Music</string>
+    <string name="binhbh">Huybinh.dev@gmail.com</string>
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+    <string name="add_song_to_favorite">Please add to favorite</string>
+    <string name="add_to_favorite">Add to favorite</string>
+    <string name="remove_from_favorite">Remove from favorite</string>
 </resources>

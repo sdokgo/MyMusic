@@ -1,19 +1,14 @@
 package com.huybinh2k.mymusic.fragment;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +21,7 @@ import com.huybinh2k.mymusic.Song;
 import com.huybinh2k.mymusic.Utils;
 import com.huybinh2k.mymusic.activity.ActivityMusic;
 import com.huybinh2k.mymusic.adapter.SongsAdapter;
+import com.huybinh2k.mymusic.database.FavoriteSongDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +34,7 @@ public class BaseSongListFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected SongsAdapter mAdapter;
     protected Context mContext;
+    protected FavoriteSongDAO mFavoriteSongDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +46,7 @@ public class BaseSongListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mListSongs = getSongList();
+        mFavoriteSongDAO = new FavoriteSongDAO(mContext);
         mRecyclerView = view.findViewById(R.id.recycler_music);
         mAdapter = new SongsAdapter(mContext, mListSongs);
         mRecyclerView.setAdapter(mAdapter);
@@ -108,19 +106,23 @@ public class BaseSongListFragment extends Fragment {
     /**
      * Đọc Tìm kiếm bài hát
      */
-    public void searchSong(String s) {
+    public void searchSong(String s, boolean isFavorite) {
         ArrayList<Song> arrayList = new ArrayList<>();
-        ContentResolver musicResolver = mContext.getContentResolver();
-        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String where = MediaStore.Audio.Media.TITLE + " LIKE " + "'%"+ s + "%'";
-        Cursor musicCursor = musicResolver.query(musicUri, null, where, null, null);
-        if (musicCursor != null) {
-            musicCursor.moveToFirst();
-            while (!musicCursor.isAfterLast()) {
-                arrayList.add(new Song(musicCursor));
-                musicCursor.moveToNext();
+        if (isFavorite){
+            arrayList = mFavoriteSongDAO.searchFavorite(s);
+        }else {
+            ContentResolver musicResolver = mContext.getContentResolver();
+            Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            String where = MediaStore.Audio.Media.TITLE + " LIKE " + "'%"+ s + "%'";
+            Cursor musicCursor = musicResolver.query(musicUri, null, where, null, null);
+            if (musicCursor != null) {
+                musicCursor.moveToFirst();
+                while (!musicCursor.isAfterLast()) {
+                    arrayList.add(new Song(musicCursor));
+                    musicCursor.moveToNext();
+                }
+                musicCursor.close();
             }
-            musicCursor.close();
         }
         mListSongs = arrayList;
         mAdapter.setList(arrayList);

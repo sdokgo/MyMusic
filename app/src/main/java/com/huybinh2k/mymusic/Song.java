@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.huybinh2k.mymusic.database.DatabaseHelper;
+
 import java.io.Serializable;
 
 /**
@@ -43,6 +45,16 @@ public class Song implements Serializable {
         Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
         imgPath = String.valueOf(albumArtUri);
         duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+    }
+
+    public Song(Cursor cursor, boolean cursorFavorite){
+        this.id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.ID));
+        this.songName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SONG_NAME));
+        this.songPath = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SONG_PATH));
+        this.artist = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SONG_ARTIST));
+        this.imgPath = cursor.getString(cursor.getColumnIndex(DatabaseHelper.IMAGE_PATH));
+        this.duration = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.DURATION));
+        this.isFavorite = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.FAVORITE))==1;
     }
 
 
